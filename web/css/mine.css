@@ -1,0 +1,27 @@
+
+/* ---------------------------MINE--------------------------- */
+
+
+
+.sunimg {margin-left:19px;}
+
+
+
+/*  SUMMARY */
+#summaryAll table {width:900px;}
+
+#summaryAll  td {
+    
+    width:108px;
+    overflow: hidden;
+    //display: inline-block;
+    //white-space: nowrap;
+    border:solid black  1px;
+}
+
+
+#summaryAll table, th, td {
+   border: 1px solid black;
+}
+/* END   SUMMARY */
+
