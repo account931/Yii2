@@ -61,7 +61,9 @@ $this->params['breadcrumbs'][] = $this->title;
 // Start if  Person is  not  logged
     else { echo "<h4>So far, You are  Not  Logged</h4></br>";
            echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/stop.png' , $options = ["margin-left"=>"","class"=>" ","width"=>"7% ",] );
-           echo' </br></br><div  style="border:solid black 1px;padding:3%;display:inline-block">LOG IN FIRST</div>';
+           echo' </br></br><div  style="border:solid black 1px;padding:3%;display:inline-block">';
+            echo Html::a( "LOG IN FIRST", ['/site/login', 'period' => "",   ] /* $url = null*/, $options = ['title' => 'Login',] ); 
+            echo '</div>'; 
          } 
 // END if  Person is  not  logged
 // **                                                                                  **

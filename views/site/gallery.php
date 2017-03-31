@@ -155,7 +155,10 @@ echo "<hr>";
 // **************************************************************************************
 //                                                                                     ** 
     else {
-           echo' <div  style="border:solid black 1px;padding:3%;display:inline-block">LOG IN FIRST</div>'; }
+           echo' <div  style="border:solid black 1px;padding:3%;display:inline-block">';
+            echo Html::a( "LOG IN FIRST", ['/site/login', 'period' => "",   ] /* $url = null*/, $options = ['title' => 'Login',] ); 
+            echo '</div>'; 
+         }
 
 // **                                                                                  **
 // **************************************************************************************

@@ -10,6 +10,9 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\captcha\Captcha;
+
+
 //END  DONOR
 
 echo "REG IT";
@@ -67,9 +70,25 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?= $form->field($model, 'email') ?>   
                 <?= $form->field($model, 'password')->passwordInput() ?>  <!--  TROUBLE IN HERE, WAS  = $form->field($model, 'password')->passwordInput(), in Controller  was  used User  model instead of SingupForm(model) -->
                  <?= $form->field($model, 'password_confirm')->passwordInput() ?> 
+
+
+<!-------Start  Captcha  --->
+               <!--   <?= $form->field($model, 'captcha')->widget(Captcha::className()) ?>-->
+
+<?=$form->field($model, 'captcha')->widget(Captcha::classname(), [
+    'template' => '{image}{input}',
+]); //this code showing captcha input to end users.
+?>
+<!------------End  captcha  -->
+
+
                 <div class="form-group"> 
                     <?= Html::submitButton('register', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
                 </div>
+
+
+
+
 
             <?php ActiveForm::end(); ?>
         </div>

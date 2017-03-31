@@ -50,7 +50,7 @@ AppAsset::register($this);
             ['label' => 'MyStats', 'url' => ['/site/mydbstart']],
              
 
-            ['label' => 'Register', 'url' => ['/site/registartion'] ,'visible' => (Yii::$app->user->isGuest)]  ,
+            ['label' => 'Reg', 'url' => ['/site/registartion'] ,'visible' => (Yii::$app->user->isGuest)]  ,
             ['label' => 'My Page', 'url' => ['/site/mypage']],
             ['label' => 'Admin', 'url' => ['/site/admin']],
             ['label' => 'Calc', 'url' => ['/site/calc']],
@@ -60,15 +60,19 @@ AppAsset::register($this);
             //['label' => 'BStrap', 'url' => ['/site/bstrap']],
             ['label' => 'Geo', 'url' => ['/site/geocoding']],
             ['label' => 'Re-route', 'url' => ['/site/reroute']],
+            ['label' => 'Sort', 'url' => ['/site/sort']],
+
 
 //Start submenu
 ['label' => 'Sub',  
         'url' => ['#'],
         'template' => '<a href="{url}" >{label}<i class="fa fa-angle-left pull-right"></i></a>',
         'items' => [
-            ['label' => 'BStrap', 'url' => ['/site/bstrap']],
+            ['label' => 'BStrap',  'url' => ['/site/bstrap']],
+            ['label' => 'My Time', 'url' => ['/site/mytime']],
+           // ['label' => 'Waze Time', 'url' => '/site/contact'],
             ['label' => 'Contact', 'url' => ['/site/contact']],
-            ['label' => 'Another action', 'url' => '#'],
+            ['label' => 'Home', 'url' => ['/site/index']],
             ['label' => 'Something else here', 'url' => '#'],
             ['label' => 'Additional  action', 'url' => '#'],
         ],

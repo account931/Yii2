@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Html;
+
 /* @var $this yii\web\View */
 
 $this->title = 'Basic Yii_2 Application';
@@ -75,4 +76,9 @@ $this->title = 'Basic Yii_2 Application';
         </div>
 
     </div>
+
+
+
+
+
 </div>
