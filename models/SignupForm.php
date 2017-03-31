@@ -17,6 +17,12 @@ class SignupForm extends Model
     public $email;
     public $password;
     public $password_confirm;
+    
+ //mine  for  captcha
+     public $captcha;
+     public $verifyCode;//confirm  delete?
+ //end  CAPTCHA
+
 
 
     /**
@@ -36,12 +42,41 @@ class SignupForm extends Model
             ['email', 'string', 'max' => 255],
             ['email', 'unique', 'targetClass' => 'app\models\User', 'message' => 'This email address has already been taken.'],
 
-            ['password', 'required'],
+            ['password', 'required','message'=>"Passwords should not  be  blank  and  empty"],
+            ['password_confirm','required'],
             ['password', 'string', 'min' => 4],
 //my compare passwords  & confirm
  ['password_confirm', 'compare', 'compareAttribute'=>'password', 'message'=>"Passwords don't match", /*'on' => 'update' */   ],
+
+
+//Start captcha 
+ ['captcha','captcha'], // add this code to your rules.
+	 /*['captcha', 'required'],
+	 ['captcha', 'captcha'],*/
+	 //['verifyCode', 'captcha'],
+// END Captcha
+
         ];
     }
+//end  rules
+
+
+
+
+
+
+//Mine  for  captcha
+public function attributeLabels()
+    {
+        return [
+            'verifyCode' => 'Verification Code',
+                        'captcha' => 'Message',
+        ];
+    }
+//end  mine  for  captcha
+
+
+
 
     /**
      * Signs user up.
@@ -58,6 +93,7 @@ class SignupForm extends Model
         $user->username = $this->username;
         $user->email = $this->email;
         $user->setPassword($this->password);
+        $user->language='English';//  my  add  for  language  default  value(regcrashes  without  it)
         $user->generateAuthKey();
         
         return $user->save() ? $user : null;
