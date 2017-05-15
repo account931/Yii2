@@ -30,7 +30,7 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'Yii-Basic 2F',
+        'brandLabel' => 'Basic',  /*Yii-Basic 2F*/
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
@@ -72,9 +72,15 @@ AppAsset::register($this);
             ['label' => 'My Time', 'url' => ['/site/mytime']],
            // ['label' => 'Waze Time', 'url' => '/site/contact'],
             ['label' => 'Contact', 'url' => ['/site/contact']],
-            ['label' => 'Home', 'url' => ['/site/index']],
+            ['label' => 'PageLinker', 'url' => ['/site/pagelinker']   ],
             ['label' => 'Something else here', 'url' => '#'],
             ['label' => 'Additional  action', 'url' => '#'],
+            
+            ['label' => Html::img(Yii::$app->request->baseUrl.'/images/pencil2.png') . ' Image  menu',  'url' => ['/site/login'],     ],  //  menu item  with image  (won't  work  without  {encodeLabels' => false,}  ,  it  is  insertd  below)   
+/*/yii/basic_download/web*/
+
+
+
         ],
     ],
 // END  Submenu           
@@ -93,6 +99,9 @@ AppAsset::register($this);
                 . '</li>'
             )
         ],
+          // added  to  let  img  in menu
+          'encodeLabels' => false,
+
     ]);
     NavBar::end();
 //  END  MAin  Vertical  menu---------------------
@@ -138,7 +147,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container"> 
-        <p class="pull-left">&copy; Yii-basic <?= date('Y') ?></p>
+        <p class="pull-left">&copy;   <?= date('Y') ?></p>
 
         <p class="pull-right"><?= Yii::powered() ?></p>
     </div>
