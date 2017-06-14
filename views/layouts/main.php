@@ -48,10 +48,14 @@ AppAsset::register($this);
             ['label' => 'About', 'url' => ['/site/about']],
             
             ['label' => 'MyStats', 'url' => ['/site/mydbstart']],
-             
+                         
 
             ['label' => 'Reg', 'url' => ['/site/registartion'] ,'visible' => (Yii::$app->user->isGuest)]  ,
+
+   
             ['label' => 'My Page', 'url' => ['/site/mypage']],
+
+
             ['label' => 'Admin', 'url' => ['/site/admin']],
             ['label' => 'Calc', 'url' => ['/site/calc']],
             ['label' => 'Split', 'url' => ['/site/split']],
@@ -68,6 +72,11 @@ AppAsset::register($this);
         'url' => ['#'],
         'template' => '<a href="{url}" >{label}<i class="fa fa-angle-left pull-right"></i></a>',
         'items' => [
+            
+            ['label' => 'DataBase', 'url' => ['/support-data/index']],
+            ['label' => 'Support Logs', 'url' => ['/supp/index']],
+            ['label' => 'WazeTrim', 'url' => ['/site/trim']],
+
             ['label' => 'BStrap',  'url' => ['/site/bstrap']],
             ['label' => 'My Time', 'url' => ['/site/mytime']],
            // ['label' => 'Waze Time', 'url' => '/site/contact'],
@@ -103,6 +112,27 @@ AppAsset::register($this);
           'encodeLabels' => false,
 
     ]);
+
+
+
+
+
+
+			//-------------
+			// Try  for  admin only (out  of item list)
+			/*if(!Yii::$app->user->isGuest){
+			   if ( strcmp ( Yii::$app->user->identity->role, 2) == 0  )
+			 {
+				 $items[] = [  ['label' => 'Sitt', 'url' => ['/site/signup'] ];  
+			  // $menuItems[] = ['label' => 'Sitt', 'url' => ['/site/signup']];     
+			}  }  */      
+			//  ENd  try  for  admin only 
+			//---------------------
+
+
+
+
+
     NavBar::end();
 //  END  MAin  Vertical  menu---------------------
 // **                                                                                  **
@@ -157,3 +187,4 @@ AppAsset::register($this);
 </body>
 </html>
 <?php $this->endPage() ?>
+

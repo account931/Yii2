@@ -22,7 +22,7 @@ use yii\bootstrap\Collapse;  //  Collapse (hide/show)
 
 
 
-$this->title = 'Stats';
+$this->title = 'Statistics';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-about">
@@ -45,11 +45,13 @@ $this->params['breadcrumbs'][] = $this->title;
 <!---------------------- Start Bootstrap------------------->
 <!--https://nix-tips.ru/yii2-vse-plyushki-twitter-bootstrap.html-->
 <?php
+$infoLink= Html::a( "more  info", ["/site/about", "period" => "",   ] /* $url = null*/, $options = ["title" => "more  info",] );  //can't  inject it  directly to  widget
+
 echo Alert::widget([
     'options' => [
         'class' => 'alert-info'
     ],
-    'body' => 'Below  u  can   <b>Record  & View  Your Activity </b>'
+    'body' => "Below  u  can   <b>Record  & View  Your Activity (geo & venues) </b> -->  <span style='font-size:0.7em;'>  $infoLink </span>   "
 ]);?>
 <!------------------------END BootStrap---------------------->
 
@@ -72,7 +74,11 @@ echo Collapse::widget([
     'items' => [
         [
             'label' => '+',
-            'content' => "   <p>http://localhost/yii/basic_download/web/index.php?r=gii</br> http://localhost/phpmyadmin/
+            'content' => "   <p><b>Gii:</b>  http://localhost/yii/basic_download/web/index.php?r=gii
+                             </br>
+                             <b>MyAdmin:</b>   http://localhost/phpmyadmin/
+                             </br>
+                             <b>Debagger:</b>  http://localhost/yii/basic_download/web/index.php?r=debug (&r=debug)
                              </br>
                              You may modify the following file to customize its content:  
                              </br>
@@ -209,7 +215,12 @@ if (Yii::$app->session->hasFlash('savedItem')){echo Alert::widget([
 <!---------------------------------------------------END   Setting  Flash---------------------------------------------->
 
 <hr class="vertical">
+<span id="showData" style="pointer:cursor;">&#8615; show additional  data &#8615;</span>
 
+
+
+<!-----------------------------------------------------------START  class="hidden_data"  ------------------------------------------>
+<div id="hidden_data"  style="display:none;">
 
 
 
@@ -221,9 +232,19 @@ if (Yii::$app->session->hasFlash('savedItem')){echo Alert::widget([
 <?php echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/server_file.png' , $options = ["margin-left"=>"","class"=>" ","width"=>"7% ",] ); ?>
  Active Record <span style="font-size:14px;">(last  5)</span></h1>
 <?php
-foreach( $activeRec as $w) {echo  "</br>".  $w->mydb_date    ." -> ".        $w->	mydb_v_am   ." per ".    $w->	mydb_v_h    ." = ".  $w->	mydb_v_pers    ;
-                            echo  " Geo: ".         $w->	mydb_g_am   ." per ".    $w->	mydb_g_h    ." = ".  $w->	mydb_g_pers    ; }
-  //echo activeRec->mydb_date;
+foreach( $activeRec as $w) {
+
+        echo  "</br><span style='color:red;'>".  $w->mydb_date ."</span>";
+        if( $w->mydb_v_am!=Null){//if  Ven  data  exists
+                            echo  "=> Venues: ".        $w->	mydb_v_am   ." per ".    $w->	mydb_v_h    ." hours = ".  $w->	mydb_v_pers  .";"    ;
+                                }
+
+        if( $w->mydb_g_am!=Null){////if  GEo data  exists
+                            echo  " Geo: ".         $w->	mydb_g_am   ." per ".    $w->	mydb_g_h    ." hours = ".  $w->	mydb_g_pers    ; 
+                                 }//end  $w->	mydb_g_am!=Null)
+
+                           //echo activeRec->mydb_date;
+                            }//end  foreach
 ?>
 <!---------------END ACTIVE RECORD----------------->
 
@@ -275,7 +296,7 @@ foreach( $activeRec as $w) {echo  "</br>".  $w->mydb_date    ." -> ".        $w-
 ?>
 <!---------------_DetailView------------------->
 
-
+</div><!-----------------------------------------------------------END class="hidden_data"  ------------------------------------------>
 
 
 
@@ -287,7 +308,7 @@ foreach( $activeRec as $w) {echo  "</br>".  $w->mydb_date    ." -> ".        $w-
 
 
 
-<?//php Pjax::begin(['id' => 'admin-crud-id', 'timeout' => false, 'enablePushState' => false, 'clientOptions' => ['method' => 'POST']])  ?>
+<?php /*php Pjax::begin(['id' => 'admin-crud-id', 'timeout' => false, 'enablePushState' => false, 'clientOptions' => ['method' => 'POST']])*/  ?>
 
 
 <?php    \yii\widgets\Pjax::begin(); ?> <?php  //this is  AJAX TRIGGER; ?>
@@ -324,7 +345,7 @@ echo ListView::widget([
 
 <h1>
 <?php echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/server_file.png' , $options = ["margin-left"=>"","class"=>" ","width"=>"7% ",] ); ?>
-GridView</h1>
+GridView <span style="font-size:12px;">(editable  area)</span></h1>
 
 
 <?php
@@ -374,6 +395,10 @@ echo GridView::widget(['dataProvider' => $dataProviderGrid,
            echo' <div  style="border:solid black 1px;padding:3%;display:inline-block">';
            echo Html::a( "LOG IN FIRST", ['/site/login', 'period' => "",   ] /* $url = null*/, $options = ['title' => 'Login',] ); 
            echo '</div>'; 
+
+           /*echo' <div  style="border:solid black 1px;padding:3%;display:inline-block">';
+           echo Html::a( " Registration ", ['/site/registartion', 'period' => "",   ] , $options = ['title' => 'Registration section',] ); 
+           echo '</div>'; */
          }
 
 // **                                                                                  **

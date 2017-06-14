@@ -9,6 +9,7 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm; 
 use app\models\Mydbstart;
+use app\models\MydbstartR;
 use app\models\User;
 use app\models\SignupForm;
 use app\models\Gallery;
@@ -23,9 +24,9 @@ use yii\grid\GridView;
 use yii\db\Expression; //  expression  for  SQL  datetime created("Now")
 use yii\base\ErrorException; //  exception
 
-
-
 use yii\web\NotFoundHttpException;//second
+
+use yii\data\Pagination;
 
 
 
@@ -104,11 +105,19 @@ public $v_pcs; //  Confirm deletion ;
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+
+//new
+//return $this->redirect(Yii::$app->request->referrer);
+//return $this->goBack((!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : null));
+//new
+
              //set flash
-             Yii::$app->getSession()->setFlash('logged', "You are logged successfully !!!!!!!!!!");$model->username="";$model->username="";$model->password="";
-            //return $this->goBack();
+             /*Yii::$app->getSession()->setFlash('logged', "You are logged successfully !!!!!!!!!!");$model->username="";$model->username="";$model->password="";*/
+
+           return $this->goBack();
 //return $this->goBack((!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : null));
         }
+
         return $this->render('login', [
             'model' => $model,
         ]);
@@ -1054,6 +1063,63 @@ public function actionMytime()
 
 
 
+//pageLinker
+// **************************************************************************************
+// **************************************************************************************
+//                                                                                     ** 
+//-------------------------
+public function actionPagelinker()
+    {
+           $query=Mydbstart::find()->orderBy ('mydb_id DESC') ;
+           $pages= new Pagination(['totalCount' => $query->count(), 'pageSize' => 7]);
+           $models = $query->offset($pages->offset)->limit($pages->limit)->all();
+
+  
+            return $this->render('pageLinker', [
+                'models' => $models,
+                'pages' => $pages,
+            ]);
+
+
+
+    }
+//------------------------------------
+
+// **                                                                                  **
+// **************************************************************************************
+// **************************************************************************************
+//END  pageLinker
+
+
+
+
+
+
+
+
+//WazeTrim
+// **************************************************************************************
+// **************************************************************************************
+//                                                                                     ** 
+//-------------------------
+public function actionTrim()
+    {
+        
+  
+            return $this->render('trim'/*, [
+                'models' => $models,
+                'pages' => $pages,
+            ]*/);
+
+
+
+    }
+//------------------------------------
+
+// **                                                                                  **
+// **************************************************************************************
+// **************************************************************************************
+//END WazeTrim
 
 
 
@@ -1269,8 +1335,6 @@ protected function findModelGallery($id)
 // **                                                                                  **
 // **************************************************************************************
 // **************************************************************************************
-
-
 
 
 

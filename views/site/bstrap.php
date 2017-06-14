@@ -386,18 +386,31 @@ echo ButtonDropdown::widget([
 
 
 
-
 ?>
 
 
 
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+<!-------------   2  column bootstrap----------->
+<div class="container-fluid">
+  <h1>Bootstrap 2 -columns </h1>
+  <p>Resize the browser window to see the effect.</p>
+  <div class="row">
+    <div class="col-sm-4" style="background-color:lavender;">.col-sm-4</div>
+    <div class="col-sm-8" style="background-color:lavenderblush;">.col-sm-8
+             </br><a href="#" data-toggle="popover" title="Popover Header" data-content="Some content inside the popover">Toggle popover</a></div>
+    </div>
+</div>
+<!------------END 2  column bootstrap----------->
 
-
-
-
-
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();   
+});
+</script>
 
 
 

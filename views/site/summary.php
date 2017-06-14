@@ -6,6 +6,7 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\bootstrap\Alert;
 
 //use yii\widgets\ListView;
 //use yii\grid\GridView;
@@ -23,6 +24,23 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="site-about">
   <h1><?= Html::encode($this->title); ?> </h1>  
+  <!--<h5>view your month performance (hours spent of tasks, quantity of  geo/venues  done,percentage performance) </h5>-->
+
+
+
+<!---------------------- Start Bootstrap------------------->
+<!--https://nix-tips.ru/yii2-vse-plyushki-twitter-bootstrap.html-->
+<?php
+echo Alert::widget([
+    'options' => [
+        'class' => 'alert-info'
+    ],
+    'body' => 'Below  u  can  view <b> your month performance </b>(hours spent of tasks, quantity of  geo/venues  done,percentage performance '
+]);?>
+<!------------------------END BootStrap---------------------->
+
+
+
 
 
 
@@ -82,16 +100,35 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 
-//Yii Link  to  view  only  current month results(visible unless clicked)  
+
+
+
+//Yii Link  to  view  only  current month results(visible unless clicked)  ----------------------------------------------------------------
+ //was  done  via a**,  so  it  a  bit ragul, u  should  not  have  used {if (!=="current")} , but {if (=="current")}, i.e  for  every  case, as  in  future  u  would  not  be  able  to  extend  these  links  for  othe r cases  (i.e month-2, -3, etc)
 if (Yii::$app->getRequest()->getQueryParam('period')!=="current") //Make Link  invisible  when click  it(if $_GET['period']=="current")
-    {echo Html::a( "view current month ( "  .date('M-Y').   ")"    , ['/site/summary', 'period' => "current", /* 'get2' => 'name'*/  ] /* $url = null*/, $options = ['title' => 'View Current  Month',] ); } //???=>   SOLVED
-else
+    {echo Html::a( "view current month ( "  .date('M-Y').   ")"    , ['/site/summary', 'period' => "current", /* 'get2' => 'name'*/  ] /* $url = null*/, $options = ['title' => 'View Current  Month',] ); 
+    } //???=>   SOLVED
+
+//-----------------------------------
+if (Yii::$app->getRequest()->getQueryParam('period')=="previous")
+{
+echo "</br>";
+echo Html::a( "back", ['/site/summary', 'period' => "", /* 'get2' => 'name'*/  ] /* $url = null*/, $options = ['title' => 'View Current  Month',] );
+}
+//----------------------
+
+
+else if(Yii::$app->getRequest()->getQueryParam('period')!=null) //  not  to  display "back"  at start page 
     {echo Html::a( "back", ['/site/summary', 'period' => "", /* 'get2' => 'name'*/  ] /* $url = null*/, $options = ['title' => 'View Current  Month',] );   }
         echo "</br>"; 
 
     //Yii Link  to  view  only   month-1 results(visible unless clicked)  
 if (Yii::$app->getRequest()->getQueryParam('period')!=="previous") //Make Link  invisible  when click  it(if $_GET['period']=="previous")
     {echo Html::a( " view previous month ( ".      date('M-Y', strtotime(date('Y-m')." -1 month"))   .")"     , ['/site/summary', 'period' => "previous", /* 'get2' => 'name'*/  ] /* $url = null*/, $options = ['title' => 'View Previous  Month',] ); }                                                   
+
+//END Yii Link  to  view  only  current month results(visible unless clicked)-------------------------------------------------- 
+
+
 
 
 
@@ -186,9 +223,14 @@ if(/*$wC2->	mydb_g_pers*/$current_g_persentage!=null){echo "<p>This  Month Geo  
               $period2=Yii::$app->getRequest()->getQueryParam('period');  //  getting  the  $_GET['param']
               if ($period2=='previous') {
                  //erase
-                      $PrevMonth=date('M', strtotime(date('Y-m')." -1 month"));          $PrevYear=date('Y', strtotime(date('Y-m')." -1 month"));  echo $PrevMonth;  echo " - ". $PrevYear;
+                      $PrevMonth=date('M', strtotime(date('Y-m')." -1 month"));          $PrevYear=date('Y', strtotime(date('Y-m')." -1 month")); 
+//--------------------------
+                       $PrevMonth2=date('m', strtotime(date('Y-m')." -1 month"));  //getting  prev  month (i.e 1-12);
+                        $days_in_prev_month=cal_days_in_month(CAL_GREGORIAN,$PrevMonth2,$PrevYear);//  number of days in prev month;
+//-----------------------------------
+                      //echo $PrevMonth;  echo " - ". $PrevYear;//confirm  delete, it  was  just  for  echoing;?
                   //end  erase
-                         echo" </br></br><div  style='border:solid black 1px;padding:3%;'><h3>Prev  Month Results (  $PrevMonth -$PrevYear   )  </h3>";
+                     echo" </br></br><div  style='border:solid black 1px;padding:3%;'><h3>Prev  Month Results (  $PrevMonth -$PrevYear , $days_in_prev_month days  )  </h3>";
                          //foreach ($modelX  as $b)  { echo  "</br>" .$b->mydb_date."</br>";} // end  Foreach  //tempoary disabled
 
 
@@ -206,7 +248,7 @@ if(/*$wC2->	mydb_g_pers*/$current_g_persentage!=null){echo "<p>This  Month Geo  
 
                                 foreach ($modelX  as $wC2)   
                               {
-         echo  "</br>" .$wC2->mydb_date."</br>";  //erase later  just  to  test  dates;
+         //echo  "</br>" .$wC2->mydb_date."</br>";  //erase later  just  to  test  dates(display all  working  days);
          //echo "<p> End </p>";
 
                                 $current_v_am= $current_v_am + $wC2->	mydb_v_am;  $current_v_h+=  $wC2->	mydb_v_h;   // calc  this  month Ven  amount  and  hours
@@ -234,6 +276,16 @@ if(/*$wC2->	mydb_g_pers*/$current_g_persentage!=null){echo "<p>Last  Month G  av
                                    $all_hours=$current_v_h + $current_g_h;// all this  month  V +G hours (for  some  bizzare  reason can't + it  in  folowwing  echo)
                                echo "<p>Last  month all hours=  <span style='color:red;'> ".$all_hours  ."</span></p>"; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //END inject(copied  from  Current  month-juast  changed in  foreach(X!!!  as))
+
+ 
+
+
+              //Start  all  working  days 
+                         echo "</br></br><h3 style=''color:red;'>Previouse month's working  days </h3>";
+                        foreach ($modelX  as $wC2)   
+                              { echo  "</br>" .$wC2->mydb_date."</br>";} 
+              //  End  all  working  days
+
 
 
 

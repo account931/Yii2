@@ -60,6 +60,7 @@ echo Collapse::widget([
 // **************************************************************
 // END  Collapse (Hide/  show  options
 
+// echo Html::a( "Not  registered?", ['/site/registartion', 'period' => "",   ] /* $url = null*/, $options = ['title' => 'Resistration',] ); 
 ?>
 
 <?php }
@@ -87,11 +88,19 @@ echo Collapse::widget([
 //                                                                                     **
 if (Yii::$app->session->hasFlash('logged')) {
 echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/auth.jpg' , $options = ["margin-left"=>"","class"=>" ","width"=>"17% ",] );
+
 } ?>
 
 <!-- FLASh(works  as well along  with the  first flash)-->
 </br><div style="font-size:18px;color:orange;border:0px solid  red;padding:17px 17px 17px 17px;display: inline-block">
  <?= Yii::$app->session->getFlash('logged'); 
+
+
+if (Yii::$app->session->hasFlash('logged')) {
+echo "</br></br>";
+echo Html::a( "Go to  your  page =>", ['/site/mydbstart', 'period' => "",   ] /* $url = null*/, $options = ['title' => 'Login',] ); 
+}
+
 
 // **                                                                                  **
 // **************************************************************************************
@@ -138,7 +147,12 @@ if(Yii::$app->user->isGuest){    ?>
             </div>
         </div>
 
-    <?php ActiveForm::end(); ?>
+    <?php ActiveForm::end(); 
+
+echo "</br>";
+echo Html::a( "Not  registered?", ['/site/registartion', 'period' => "",   ] /* $url = null*/, $options = ['title' => 'Resistration',] );
+
+?>
 
 
 
