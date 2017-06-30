@@ -7,6 +7,8 @@ use yii\widgets\Pjax;
 
 use yii\bootstrap\Alert;
 use yii\bootstrap\Collapse;  //  Collapse (hide/show)
+use yii\widgets\ActiveForm;
+
 
 // Do diable must have login kill   // Start if  Person is  LOGGED-------  End if  Person is  LOGGED
 
@@ -108,11 +110,56 @@ echo Collapse::widget([
 
 
 
-<?php 
- echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/plus.png' , $options = ["id"=>"sx","margin-left"=>"3%","class"=>"sunimg","width"=>"4%","alt"=>"click","title"=>"click to add a  new  one"] );
-echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/addarrow.gif' , $options = ["id"=>"sx","margin-left"=>"3%","class"=>"sunimg","width"=>"6%","title"=>"click to add a  new  one"] ); ?>
 
-<span id="sx" style="cursor:pointer;"><?= Html::encode("Add an issue") ?></span>
+<!------- Start container Trigger for Form to add+ serach------>
+<div class="row">
+  <div class="col-sm-6">
+
+
+
+			<?php 
+			 echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/plus.png' , $options =["id"=>"sx","marginleft"=>"3%","class"=>"sunimg","width"=>"9%","alt"=>"click","title"=>"click to add a  new  one"] );
+			 echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/addarrow.gif' , $options = ["id"=>"sx","margin-left"=>"3%","class"=>"sunimg","width"=>"12%","title"=>"click to add a  new  one"] ); ?>
+
+			<span id="sx" style="cursor:pointer;"><?= Html::encode("Add an issue") ?></span>
+
+ </div>
+
+ <!-------Start search------>
+ <div class="col-sm-4">
+            <?php $form = ActiveForm::begin(); ?>
+            <?= $form->field($searchMine, 'q')->textInput(['class' => 'input']) ?>
+            <?= Html::submitButton('Search', ['class' =>  'btn btn-success']) ?>
+            <?php ActiveForm::end(); ?>
+ </div>
+ <!-------END search------>
+
+</div><!------ Start container Trigger for Form to add+ search------>
+
+
+
+
+ 
+<!--flash-->
+</br>
+<div style="font-size:18px;color:orange;border:0px solid  red;padding:17px 17px 17px 17px;display: inline-block"><!--Dublicate-->
+ <?= $nn=Yii::$app->session->getFlash('savedItemZ');  ?>
+</div>
+
+
+<?php
+echo"</br>";
+if (Yii::$app->session->hasFlash('savedItemZ')){echo Alert::widget([
+    'options' => [
+        'class' => 'alert alert-info'
+    ],
+    'body' => "$nn"
+]);}
+//  End  If  saved FLASH IS SET /  has  flash and  has  falsh   show  Bootstarp    alert  window------
+?>
+
+<!--END flash-->
+
 
 
 
