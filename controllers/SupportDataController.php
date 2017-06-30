@@ -1,16 +1,20 @@
 <?php
-//used  for  support Data Base,  most  frequent used topics
+//used  for  support Data Base, knowledge base most  frequent used topics
 namespace app\controllers;
 
 use Yii;
+
 use app\models\SupportData;
 use app\models\SupportDataSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\Html;
 
 use yii\data\Pagination;
 use yii\data\ActiveDataProvider;
+
+use app\models\SearchFormMine; //our model for search
 
 /**
  * SupportDataController implements the CRUD actions for SupportData model.
@@ -71,7 +75,19 @@ class SupportDataController extends Controller
              $model->sData_date=date('j-M-D-Y'); 
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->sData_id]);
+
+                               //$model->sData_header="yes";//clear field
+
+                              //FLASHES!!!! //if  set  after F5  refreshing  won't  work;
+							    Yii::$app->getSession()->setFlash('savedItemZ', "We saved your item  ->>  <b> $model->sData_header </b>");
+								//prevent  F5  resending
+								//Mydbstart::model()->unsetAttributes(); 
+								//$model=new Mydbstart();// not  working
+								return $this->refresh();
+
+            //return $this->redirect(['view', 'id' => $model->sData_id]);
+// end if ($model->load(Yii::$app->request->post()) && $model->save())
+
         } else {
            /* return $this->render('create', [
                 'model' => $model,
@@ -102,6 +118,16 @@ class SupportDataController extends Controller
 
 
 
+//search model init-----------------------------
+$searchMine=new SearchFormMine();
+if ($searchMine->load(Yii::$app->request->post()) && $searchMine->validate()) 
+   {
+         $q=Html::encode($searchMine->q);
+         return $this->redirect (Yii::$app->urlManager->createUrl (['support-data/searchmine','q'=>$q]));
+   }
+//END search model init--------------------------
+
+
 
 
 
@@ -114,6 +140,7 @@ class SupportDataController extends Controller
 
             'pages' => $pages,      //pageLinker
             'modelPageLinker' => $modelPageLinker, //pageLinker
+               'searchMine'=>$searchMine, //search
         ]);
     }
 
@@ -122,6 +149,60 @@ class SupportDataController extends Controller
 // **************************************************************************************  
 //------------------------------------------------------
 // END  Index
+
+
+
+
+
+//PROBLEM HERE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//Search
+//andFilterWhere(['like', 'sData_text', Yii::$app->getRequest()->getQueryParam('q')])==LIKE
+//----------------------------------------------
+// **************************************************************************************
+// **************************************************************************************
+//                                                                                     **
+    public function actionSearchmine()
+    {
+      //PageLinker
+                            
+           $query=SupportData::find()->orderBy ('sData_id DESC')->andFilterWhere(['like', 'sData_text', Yii::$app->getRequest()->getQueryParam('q')])/*->where(['sData_text'=>Yii::$app->getRequest()->getQueryParam('q') ])*/ /* ->all()*/;
+ 
+           $pages= new Pagination(['totalCount' => $query->count(), 'pageSize' => 9]);
+           $modelPageLinker = $query->offset($pages->offset)->limit($pages->limit)->all();  
+       //end  pageLinker
+
+
+
+
+
+
+//RENDER
+        return $this->render('searchmine', [
+             'modelPageLinker' => $modelPageLinker, //pageLinker
+             'pages' => $pages,      //pageLinker
+]);
+    }
+
+// **                                                                                  **
+// **************************************************************************************
+// **************************************************************************************  
+//------------------------------------------------------
+// END  Search
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     /**
@@ -146,6 +227,7 @@ class SupportDataController extends Controller
         $model = new SupportData();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+							
             return $this->redirect(['view', 'id' => $model->sData_id]);
         } else {
             return $this->render('create', [
