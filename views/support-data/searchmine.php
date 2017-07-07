@@ -1,5 +1,9 @@
 <?php
 
+//
+//Search view for Support CR's knowledge base
+
+
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\widgets\LinkPager;
@@ -8,7 +12,7 @@ use yii\widgets\LinkPager;
 /* @var $model app\models\SupportData */
 ?>
 <div>
-Hello Search
+
 </div>
 
 
@@ -18,6 +22,7 @@ Hello Search
 
 
 <h1>DataBase</h1>
+<?php echo Html::a( "Return back", ['/support-data/index', 'period' => "",   ] /* $url = null*/, $options = ['title' => 'Resistration',] ); ?>
 <!----------------Start PageLinker--------------------------------->
 <?php
 // Start 

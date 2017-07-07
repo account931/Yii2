@@ -1,5 +1,10 @@
 <?php
 
+//
+//Support CR's knowledge base
+
+
+
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\LinkPager;
@@ -58,6 +63,7 @@ echo Alert::widget([
 
 
 
+
 <!--</div>-->
 
 
@@ -111,13 +117,14 @@ echo Collapse::widget([
 
 
 
-<!------- Start container Trigger for Form to add+ serach------>
+<!------- Start Container Trigger to make Form to add item visible + Serach------>
 <div class="row">
   <div class="col-sm-6">
 
 
 
 			<?php 
+             echo "</br></br>";
 			 echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/plus.png' , $options =["id"=>"sx","marginleft"=>"3%","class"=>"sunimg","width"=>"9%","alt"=>"click","title"=>"click to add a  new  one"] );
 			 echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/addarrow.gif' , $options = ["id"=>"sx","margin-left"=>"3%","class"=>"sunimg","width"=>"12%","title"=>"click to add a  new  one"] ); ?>
 
@@ -127,6 +134,7 @@ echo Collapse::widget([
 
  <!-------Start search------>
  <div class="col-sm-4">
+             <h3>Search your issue</h3>
             <?php $form = ActiveForm::begin(); ?>
             <?= $form->field($searchMine, 'q')->textInput(['class' => 'input']) ?>
             <?= Html::submitButton('Search', ['class' =>  'btn btn-success']) ?>
@@ -140,10 +148,10 @@ echo Collapse::widget([
 
 
  
-<!--flash-->
+<!---------flash------------>
 </br>
 <div style="font-size:18px;color:orange;border:0px solid  red;padding:17px 17px 17px 17px;display: inline-block"><!--Dublicate-->
- <?= $nn=Yii::$app->session->getFlash('savedItemZ');  ?>
+ <?php /*=*/ $nn=Yii::$app->session->getFlash('savedItemZ');  ?>
 </div>
 
 
@@ -158,7 +166,7 @@ if (Yii::$app->session->hasFlash('savedItemZ')){echo Alert::widget([
 //  End  If  saved FLASH IS SET /  has  flash and  has  falsh   show  Bootstarp    alert  window------
 ?>
 
-<!--END flash-->
+<!----------END flash--------------------->
 
 
 
