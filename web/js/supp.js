@@ -10,18 +10,23 @@ window.b='';
 
 //----------------------------------------------------
 //Click SPLIT  Button
-    $("#splitButton").click(function(){        // $(document).on("click", '.circle', function() {   // this  click  is  used  to   react  to  newly generated cicles;
+    $("#trimButton").click(function(){        // $(document).on("click", '.circle', function() {   // this  click  is  used  to   react  to  newly generated cicles;
+
+if ($("#coordsInput").val()!="")
+ {
+			trimWaze();
+ } //END ($("#coordsInput").val()!=null)
+ else{hFinal='<h2 style="color:red;"></br>Error => No input detected</br></br></h2>';}
+
+//-----
 
 
-    trimWaze();
+			$("#resultFinal").stop().fadeOut("slow",function(){ 
+						    $(this).html(hFinal)
+						}).fadeIn(2000);
 
-
-$("#resultFinal").stop().fadeOut("slow",function(){ 
-                $(this).html(hFinal)
-            }).fadeIn(2000);
-
-$("#resultFinal").css("border","1px solid red"); //  set  red  border  for  result  div
-//
+			$("#resultFinal").css("border","1px solid red"); //  set  red  border  for  result  div
+			//
 
 
 
@@ -110,10 +115,10 @@ $("#resultFinal").css("border","1px solid red"); //  set  red  border  for  resu
 
 //----------------------------------------------------
 //Click Instruction  Button
-    $("#instructionButton").click(function(){
+    $("#TrimInstructionButton").click(function(){
     $("#hiddenInstructions").toggle(1000);
-if( $("#instructionButton").attr("value")=="instructions")
-   { $("#instructionButton").val("Close");$("#instructionButton").css("background","red");} else { $("#instructionButton").val("instructions");$("#instructionButton").css("background","grey")}
+if( $("#TrimInstructionButton").attr("value")=="instructions")
+   { $("#TrimInstructionButton").val("Close");$("#TrimInstructionButton").css("background","red");} else { $("#TrimInstructionButton").val("instructions");$("#TrimInstructionButton").css("background","grey")}
 
  });
 //END Click Instructions  Button
@@ -144,6 +149,10 @@ if( $("#instructionButton").attr("value")=="instructions")
 //END  Hid e Instructuins  and  change  button
  $("#highLight_errors_button").hide(1000);// hide link highlight details
  $("#highLight_errors").hide(1000); //hide highlight details
+
+//hide CAUTION in left top corner if ISSET(Help center)
+if($('#popAlert').length > 0){$('#popAlert').remove();}
+
  });
 //END CLEAR  Button
 //***********************************************
@@ -195,8 +204,8 @@ function HideInstructions (){
 if ( $('#hiddenInstructions').css('display') == 'none' ){} else{
 
 $("#hiddenInstructions").hide(2000);
-        if( $("#instructionButton").attr("value")=="instructions")
-       { $("#instructionButton").val("Close");$("#instructionButton").css("background","red");} else { $("#instructionButton").val("instructions");$("#instructionButton").css("background","grey")}
+        if( $("#TrimInstructionButton").attr("value")=="instructions")
+       { $("#TrimInstructionButton").val("Close");$("#TrimInstructionButton").css("background","red");} else { $("#TrimInstructionButton").val("instructions");$("#TrimInstructionButton").css("background","grey")}
 }
 }
 //---------------------------------------------------------------
@@ -214,6 +223,15 @@ $("#resultFinal").stop().fadeOut("slow",function(){  $(this).html("<h1 style='co
 
 
 
+
+
+
+
+
+
+
+
+
 //---------------------------------------------------------------------------
 // **************************************************************************************
 // **************************************************************************************
@@ -223,32 +241,68 @@ function trimWaze(){
 var textarea=$("#coordsInput").val();
 
 
-
-//count occurance double space---------------------
+//Here Listed all RG EXPRESSION Options!!!!!!!!!!!!!!1
+//count diffrence occurance of errors (double space etc)---------------------
   //var regExp = new RegExp(\s\s+, "gi");
   var numb = (textarea.match(/  +/g) || []).length;
   //alert(numb);
   var numbComma = (textarea.match(/ \,+/g) || []).length; //count space+comma
+
   var numbDot = (textarea.match(/ \.+/g) || []).length; //count space+dot
   //alert("comma-> "+numbComma +" dot->"+numbDot);
   
-  var AllErrorsCount=numb+numbComma+numbDot;
+  var doubleWords =(textarea.match(/\b(\w+)\s+\1\b/g) || []).length; // count all consecutive duplicate words
+  
+  var doubleCommas =(textarea.match(/(\,\,+)/g  ) || []).length; // count all consecutive duplicate commas (i.e ",,")
+
+  var doubleDots =(textarea.match(/(\.\.+)/g  ) || []).length; // count all consecutive duplicate dots (i.e "..")
+
+
+  
+
+  //start Help Center issue---
+  var hrefUrlBlankSpace =(textarea.match(/Help Center/gi) || []).length; // checking Help Center space; if blankspace is linked. Can't design it normally!!! 
+         //$("body").append("<div id='popAlert' style='position:absolute;width:10%;height:20px;top:0px;left:0px;background:red;'><center>Caution -></center></div>");
+         if(hrefUrlBlankSpace>0){/*alert("Caution -> URL detected!!!");*/
+                                $("body").append("<div id='popAlert' style='position:absolute;width:8%;height:20px;top:0px;left:0px;background:red;'><center>Caution -></center></div>");
+                              //$("#popAlert").hide(500); //$('#popAlert').remove();
+                             }else{$('#popAlert').remove();}
+  // END Help Center issue-----[
+
+ 
+
+  var commaCharNoSpace =(textarea.match(/\,([^ ])/g) || []).length; // count comma followed by NO SPACE (i.e ",char")  //work here!!!!!!!
+
+  // var dotCharNoSpace =(textarea.match(/\.(.)/g) || []).length; // count dot followed by NO SPACE (.char)//NOT IMPLEMENTED
+   
+  //Please know that(if that is missing)!!!!!!!!!!!!!!!!!!!!!!
+		var RegExp_PlsKnow = /please (know||note)\s*(?!that)\w*/gi;  //Reg Expression itself  http://www.regextester.com/15 //please (know||note) [^t][^h][^a][^t]*\w* /gi;
+        var PlsKnowErrCount =(textarea.match(RegExp_PlsKnow ) || []).length; //count "please know"
+	    if(textarea.match(RegExp_PlsKnow)) {alert('Missing "that" Error => '+ PlsKnowErrCount);} //if at least 1 result
+
+
+   
+ // count all counts Errors all together (they are +-ed)
+  var AllErrorsCount=numb+numbComma+numbDot+doubleWords+doubleCommas+doubleDots/*+PlsKnowErrCount*/ ;  //+commaCharNoSpace
+
 //end  count occurance double space-----------------
+//Here Listed all RG EXPRESSION Options!!!!!!!!!!!!!!1-----------------------------------------------
 
 
 
 
 
-//START  Highlight Double Spaces(+comma+dots)----------------------------------------------
+
+//START  Highlight Double Spaces(+comma+dots_dublicates)----------------------------------------------
 var arrayX2HIGHLIGHT=textarea.split('\n');/*.join(',').split(','); */
 var resHighlight='';
 for(j=0;j<arrayX2HIGHLIGHT.length; j++)
  {  
-     resHighlight+= arrayX2HIGHLIGHT[j].replace(/  +/g, "&nbsp;<span style='background:red;'> __ </span>&nbsp;").replace(/ \,+/g, "&nbsp;<span style='background:red;'> __, </span>&nbsp;").replace(/ \.+/g, "&nbsp;<span style='background:red;'> __. </span>&nbsp;")                  +"</br>";//replace all double spaces with red
+     resHighlight+= arrayX2HIGHLIGHT[j]./*->double sapces*/replace(/  +/g, "&nbsp;<span style='background:red;'> __ </span>&nbsp;").replace(/ \,+/g, "&nbsp;<span style='background:red;'> __, </span>&nbsp;").replace(/ \.+/g, "&nbsp;<span style='background:red;'> __. </span>&nbsp;")./*dublicate*/replace(/\b(\w+)\s+\1\b/g, "&nbsp;<span style='background:red;'> \$1 \$1 </span>&nbsp;")./*double,,*/replace(/\,\,+/g, "&nbsp;<span style='background:red;'> ,, </span>&nbsp;")./*double..*/replace(/\.\.+/g, "&nbsp;<span style='background:red;'> .. </span>&nbsp;")/*comma char no space(,word)*//*.replace(/\,(.)/g, "&nbsp;<span style='background:red;'> ,</span>&nbsp;")*/                  +"</br>";//replace all double spaces with red
 	//arrayX2HIGHLIGHT[j].replace(/  +/g, "&nbsp;<span style='background:red;'> __ </span>&nbsp;")+"</br>";//replace all double spaces with red
-	//arrayX2HIGHLIGHT[j].replace(/ \,+/g, "&nbsp;<span style='background:red;'> __, </span>&nbsp;")+"</br>";//replace all spaces + Commas with red
+	//arrayX2HIGHLIGHT[j].replace(/ \,+/g, "&nbsp;<span style='background:red;'> __, </span>&nbsp;")+"</br>";//replace all spaces + Commas with red  /(\.\.+)/g
 	
-	//resHighlight+= arrayX2HIGHLIGHT[j];
+	//resHighlight+= arrayX2HIGHLIGHT[j];   
  }
 $("#highLight_errors").html(resHighlight);
 //$("#coordsInput").val(resHighlight);
@@ -275,14 +329,17 @@ $("#loadAjax").fadeIn(2000).html("Processed").fadeOut(3000);
 
 
 //
-window.hFinal='</br><p><p id="ErrorShow" style="color:red;cursor:pointer;" title="click">Errors => '+AllErrorsCount+'</p><p id="ErrorHidden" style="color:red;display:none;">Spaces => '+numb+'; Commas => '+numbComma+ '; Dots => '+numbDot+'</p><input type="button" value="Copy" id="copybutton"><span id="flashMessage"></span> </br></br><p id="tableResults"></br>';
+var TextAfterCorrection;
+if(AllErrorsCount==0){TextAfterCorrection="No correction was performed";}else{TextAfterCorrection="Text after correction";}
+
+window.hFinal='</br><p><p id="ErrorShow" style="color:red;cursor:pointer;" title="click">Errors => '+AllErrorsCount+'</p><p id="ErrorHidden" style="color:red;display:none;">Double Spaces => '+numb+'; </br>Char followed by comma with space => '+numbComma+ '; Dots followed => '+numbDot+'; </br>Consecutive duplicates => '+doubleWords+'; </br>Double commas => '+doubleCommas+    '; Double dots => '+doubleDots+ /* '; </br>Comma+char with NO space => ' +commaCharNoSpace+ */  '</p><input type="button" value="Copy" id="copybutton"><span id="flashMessage"></span> </br><center><h5 style="color:red;">'+TextAfterCorrection+'</h5></center> </br><p id="tableResults"></br>';
   
 
  
-//Correcting spaces ,commas, dots in result to HTML
+//Correcting/Fixing spaces ,commas, dots, dublicates in result to HTML
  dataX='';
  for(j=0;j<arrayX2.length; j++) {  
- dataX=arrayX2[j].replace( /\s\s+/g, ' ' ).replace( / \,+/g, ',' ).replace( / \.+/g, '.' )+'</br>';
+ dataX=arrayX2[j].replace( /\s\s+/g, ' ' ).replace( / \,+/g, ',' ).replace( / \.+/g, '.' )./*word duplicate*/replace( /\b(\w+)\s+\1\b/g, '\$1' )./*double commas ,,*/replace( /\,\,+/g, ',' )./*double dots ..*/replace( /\.\.+/g, '.' )./*comma follwed by char no space*/replace(/\,(.)/g, ', \$1' )+'</br>';    
  hFinal=hFinal+dataX;
  }
  //  should  we  or  not add  a  footer to  result
@@ -311,7 +368,9 @@ $("#highLight_errors").hide(); //hide content
 
 
 
-// SHOW DETAILS
+
+
+// SHOW ERRORS DETAILS
 //---------------------
 $("#highLight_errors_button").click(function(){ 
  $("#highLight_errors").toggle(1000);
