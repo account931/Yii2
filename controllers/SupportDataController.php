@@ -1,4 +1,6 @@
 <?php
+//
+//Controller for Support CR's knowledge base
 //used  for  support Data Base, knowledge base most  frequent used topics
 namespace app\controllers;
 
@@ -78,17 +80,20 @@ class SupportDataController extends Controller
 
                                //$model->sData_header="yes";//clear field
 
-                              //FLASHES!!!! //if  set  after F5  refreshing  won't  work;
-							    Yii::$app->getSession()->setFlash('savedItemZ', "We saved your item  ->>  <b> $model->sData_header </b>");
+
+                               //FLASHES!!!! //if  set  after F5  refreshing  won't  work;
+							    Yii::$app->getSession()->setFlash('savedItemZ', "We saved your item  ->>  <b> $model->sData_header</b>");
 								//prevent  F5  resending
 								//Mydbstart::model()->unsetAttributes(); 
 								//$model=new Mydbstart();// not  working
 								return $this->refresh();
 
+
             //return $this->redirect(['view', 'id' => $model->sData_id]);
 // end if ($model->load(Yii::$app->request->post()) && $model->save())
 
-        } else {
+        } else { 
+                  //Yii::$app->getSession()->setFlash('savedItemZ', "<span style='color:red;'>Please check your form, something was wrong ->> Your input was not saved </span> ");
            /* return $this->render('create', [
                 'model' => $model,
             ]);*/
