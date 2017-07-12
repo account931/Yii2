@@ -110,7 +110,32 @@ echo Collapse::widget([
 
 
 
-</br></br></br>
+<!--</br></br></br>-->
+
+
+
+
+<!------- SEARCH------>
+<div class="row">
+
+ <!-------Start search------>
+ <!--<div class="col-sm-4" style="margin-left:0%">
+             <h3>Search your issue</h3>
+            <?php $form = ActiveForm::begin(); ?>
+            <?= $form->field($searchMine, 'q')->textInput(['class' => 'input']) ?>
+            <?= Html::submitButton('Search', ['class' =>  'btn btn-success']) ?>
+            <?php ActiveForm::end(); ?>
+ </div>-->
+ <!-------END search------>
+
+</div><!------ SEARCH------>
+
+
+
+
+
+</br></br>
+
 
 
 
@@ -119,21 +144,12 @@ echo Collapse::widget([
 
 <!------- Start Container Trigger to make Form to add item visible + Serach------>
 <div class="row">
-  <div class="col-sm-6">
+ 
 
 
-
-			<?php 
-             echo "</br></br>";
-			 echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/plus.png' , $options =["id"=>"sx","marginleft"=>"3%","class"=>"sunimg","width"=>"9%","alt"=>"click","title"=>"click to add a  new  one"] );
-			 echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/addarrow.gif' , $options = ["id"=>"sx","margin-left"=>"3%","class"=>"sunimg","width"=>"12%","title"=>"click to add a  new  one"] ); ?>
-
-			<span id="sx" style="cursor:pointer;"><?= Html::encode("Add an issue") ?></span>
-
- </div>
 
  <!-------Start search------>
- <div class="col-sm-4">
+   <div class="col-sm-4" style="">
              <h3>Search your issue</h3>
             <?php $form = ActiveForm::begin(); ?>
             <?= $form->field($searchMine, 'q')->textInput(['class' => 'input']) ?>
@@ -141,6 +157,23 @@ echo Collapse::widget([
             <?php ActiveForm::end(); ?>
  </div>
  <!-------END search------>
+
+
+
+
+<!------- Add  button------>
+  <div class="col-sm-6">
+
+     		<?php 
+             echo "</br></br>";
+			// echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/plus.png' , $options =["id"=>"sx","margin-left"=>"0%","class"=>"sunimg","width"=>"9%","alt"=>"click","title"=>"click to add a  new  one"] );
+			 echo Html::img(Yii::$app->getUrlManager()->getBaseUrl().'/images/addarrow.gif' , $options = ["id"=>"sx","margin-left"=>"3%","class"=>"sunimg","width"=>"12%","title"=>"click to add a  new  one"] ); ?>
+
+			<span id="sx" style="cursor:pointer;"><?= Html::encode("Add an issue") ?></span>   
+
+ </div>
+<!------- END Add  button------>
+
 
 </div><!------ Start container Trigger for Form to add+ search------>
 
@@ -195,9 +228,9 @@ if (Yii::$app->session->hasFlash('savedItemZ')){echo Alert::widget([
 
 
 
-</br></br>
+<!--</br>-->
 <hr style="color:grey;height:3px;">
-</br>
+<!--</br>-->
 
 
 
@@ -346,7 +379,8 @@ echo LinkPager::widget([
 //                                                                                     ** 
     else {
            echo' </br></br><div  style="border:solid black 1px;padding:3%;display:inline-block">';
-           echo Html::a( "LOG IN FIRST", ['/site/login', 'period' => "",   ] /* $url = null*/, $options = ['title' => 'Login',] ); 
+           //below we set $_GET['traceURL'] to trace it in /site/login  and set if statement to redirect user here again after authentication
+           echo Html::a( " LOG IN FIRST </br>TO VIEW DATA", ['/site/login', 'traceURL' => "supp_kbase",   ] /* $url = null*/, $options = ['title' => 'Login',] ); //settin $_GET[]
            echo '</div>'; 
          }
 
