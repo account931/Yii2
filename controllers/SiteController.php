@@ -106,6 +106,19 @@ public $v_pcs; //  Confirm deletion ;
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
 
+
+
+
+//Injected History -1 -> if you login from Support DataBase (support-data/index), it takes u back after authentication
+	if (Yii::$app->getRequest()->getQueryParam('traceURL')=="supp_kbase"){
+    return $this->redirect(['support-data/index']);
+	}
+//End Injectd History -1 -> if you login from Support DataBase (support-data/index), it takes u back after authentication
+
+
+
+
+
 //new
 //return $this->redirect(Yii::$app->request->referrer);
 //return $this->goBack((!empty(Yii::$app->request->referrer) ? Yii::$app->request->referrer : null));
